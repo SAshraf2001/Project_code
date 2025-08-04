@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %} Home - TodoList {% endblock title %}
+
+{% block body %}
+<div class="container py-5 text-center">
+    <h1 class="display-4 mb-3">Welcome to TodoList</h1>
+    <p class="lead text-muted mb-4">Organize your tasks, stay productive, and manage your day with ease.</p>
+    <a href="ilist/home_todo" class="btn btn-primary btn-lg mb-5">Get Started</a>
+
+    <!-- Features Section -->
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Create Tasks</h5>
+                    <p class="card-text">Quickly add tasks to your list with a simple and intuitive interface.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Track Progress</h5>
+                    <p class="card-text">Mark tasks as complete and monitor your daily progress easily.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Stay Organized</h5>
+                    <p class="card-text">Group tasks by categories and never miss a deadline.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-title {
+        font-weight: 600;
+    }
+
+    .card-text {
+        font-size: 0.95rem;
+        color: #6c757d;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 2rem;
+    }
+</style>
+{% endblock body %}

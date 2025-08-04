@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %} Add Todo {% endblock title %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<div class="container">
+  <div class="form-container bg-white p-4 rounded shadow mt-4" style="max-width: 600px; margin: auto;">
+    <h2 class="mb-4 text-center">Add a New Todo</h2>
+    <form action="/ilist/home_todo" method="post">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Enter task title" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="content" class="form-label">Content</label>
+        <textarea class="form-control" id="content" name="content" rows="4" placeholder="Describe the task..." required></textarea>
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="number" class="form-label">Status</label>
+        <textarea class="form-control" id="status" name="status" rows="4" placeholder="Describe the Status" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Create Todo</button>
+    </form>
+  </div>
+</div>
+{% else %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+  <div class="alert alert-warning text-center p-4 rounded shadow-sm" role="alert">
+    <h4 class="alert-heading">Access Denied</h4>
+    <p>You must be logged in to write or add the Todos.</p>
+  </div>
+</div>
+
+{% endif %}
+
+
+{% endblock body %}

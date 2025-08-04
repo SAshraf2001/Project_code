@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}View Todos{% endblock title %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<div class="container mt-4">
+  <h2 class="mb-4">All Todos</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for list in allList %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ list.title }}</td>
+          <td>{{ list.content }}</td>
+
+          {% if list.status.statusName == "Completed" %}
+            <td><span class="badge bg-success">{{ list.status.statusName }}</span></td>
+          {% else %}
+            <td><span class="badge bg-warning text-dark">{{ list.status.statusName }}</span></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+  <div class="alert alert-warning text-center p-4 rounded shadow-sm" role="alert">
+    <h4 class="alert-heading">Access Denied</h4>
+    <p>You must be logged in to see this content.</p>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock body %}

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}404 - NOT FOUND{% endblock title %}
+
+{% block body %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  .container-404 {
+    max-width: 400px;
+    background: rgba(30, 30, 30, 0.85);
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 80px auto;
+    text-align: center;
+    color: #eee;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .error-code {
+    font-size: 9rem;
+    font-weight: 900;
+    margin: 0;
+    position: relative;
+    animation: pulse 2.5s ease-in-out infinite;
+    letter-spacing: 15px;
+    color: #fff;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 20px #00ffff,
+      0 0 30px #00bcd4,
+      0 0 40px #0097a7,
+      0 0 50px #006064;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      text-shadow:
+        0 0 10px #fff,
+        0 0 20px #00ffff,
+        0 0 30px #00bcd4,
+        0 0 40px #0097a7,
+        0 0 50px #006064;
+    }
+    50% {
+      text-shadow:
+        0 0 20px #00ffff,
+        0 0 40px #00bcd4,
+        0 0 60px #0097a7,
+        0 0 80px #006064,
+        0 0 100px #004d40;
+    }
+  }
+
+  .container-404 h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin: 15px 0 10px;
+    color: #ccc;
+  }
+
+  .container-404 p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #aaa;
+    line-height: 1.5;
+  }
+
+  .container-404 a {
+    text-decoration: none;
+    background: #00bcd4;
+    color: #121212;
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.6);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+  }
+
+  .container-404 a:hover {
+    background: #008ba3;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 139, 163, 0.8);
+  }
+
+  @media (max-width: 480px) {
+    .error-code {
+      font-size: 6rem;
+      letter-spacing: 10px;
+    }
+    .container-404 {
+      padding: 30px 20px;
+    }
+  }
+</style>
+
+<div class="container-404">
+  <div class="error-code">404</div>
+  <h1>Page Not Found</h1>
+  <p>Sorry, the page you are looking for does not exist or has been moved.</p>
+  <a href="/">Return Home</a>
+</div>
+{% endblock body %}
