@@ -19,11 +19,15 @@
         <label for="content" class="form-label">Content</label>
         <textarea class="form-control" id="content" name="content" rows="4" placeholder="Describe the task..." required></textarea>
       </div>
-      
 
       <div class="mb-3">
-        <label for="number" class="form-label">Status</label>
-        <textarea class="form-control" id="status" name="status" rows="4" placeholder="Describe the Status" required></textarea>
+        <label for="status" class="form-label">Status</label>
+        <select class="form-control" id="status" name="status" required>
+          <option value="" disabled selected>Select status</option>
+          {% for status in statuses %}
+          <option value="{{status.statusName}}">{{status.statusName}}</option>
+          {% endfor %}
+        </select>
       </div>
 
       <button type="submit" class="btn btn-primary w-100">Create Todo</button>
@@ -40,6 +44,5 @@
 </div>
 
 {% endif %}
-
 
 {% endblock body %}
