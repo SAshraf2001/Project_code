@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Success - ChefFlow</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #ffb100;
+        --success: #22c55e;
+        --bg-dark: #0f172a;
+        --glass: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-light: #f8fafc;
+        --text-muted: #94a3b8;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Inter", sans-serif;
+        background: radial-gradient(circle at top right, #1e293b, #0f172a);
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .payment-card {
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        padding: 50px 40px;
+        border-radius: 32px;
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes cardAppear {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Animated Paid Stamp */
+      .paid-stamp {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        border: 3px solid var(--success);
+        color: var(--success);
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-weight: 800;
+        text-transform: uppercase;
+        transform: rotate(15deg);
+        font-size: 1rem;
+        letter-spacing: 1px;
+        animation: stampIn 0.5s ease-out 0.8s both;
+      }
+
+      @keyframes stampIn {
+        0% {
+          opacity: 0;
+          transform: rotate(15deg) scale(3);
+        }
+        100% {
+          opacity: 0.6;
+          transform: rotate(15deg) scale(1);
+        }
+      }
+
+      .success-circle {
+        width: 72px;
+        height: 72px;
+        background: rgba(34, 197, 94, 0.1);
+        border: 2px solid var(--success);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        color: var(--success);
+        font-size: 2rem;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        margin: 0 0 10px 0;
+        font-weight: 700;
+      }
+
+      .status-text {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+      }
+
+      .price-display {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 35px;
+      }
+
+      .receipt-box {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 35px;
+      }
+
+      .line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 0.85rem;
+      }
+
+      .line:last-child {
+        margin-bottom: 0;
+        padding-top: 12px;
+        border-top: 1px dashed var(--glass-border);
+      }
+
+      .line span:first-child {
+        color: var(--text-muted);
+      }
+      .line span:last-child {
+        font-weight: 600;
+        color: var(--text-light);
+      }
+
+      .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-main {
+        background: var(--primary);
+        color: #000;
+      }
+
+      .btn-main:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 177, 0, 0.3);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-light);
+        border: 1px solid var(--glass-border);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-note {
+        margin-top: 25px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .footer-note a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <div class="payment-card">
+      {% for item in param %}
+      <div class="paid-stamp">Paid</div>
+
+      <div class="success-circle">✓</div>
+
+      <h1>Payment Successful</h1>
+      <p class="status-text">Your transaction has been processed.</p>
+
+      <div class="price-display">Rs. {{item.amount}}</div>
+
+      <div class="receipt-box">
+        <div class="line">
+          <span>Transaction ID</span>
+          <span>#{{item.payId}}</span>
+        </div>
+        <div class="line">
+          <span>{{item.payment_method}}</span>
+          <span>Digital Wallet</span>
+        </div>
+        <div class="line">
+          <span>Status</span>
+          <span style="color: var(--success)">Completed</span>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <a href="{% url 'order_Products' %}" class="btn-link">
+          <button class="btn btn-main" style="width: 100%;">Next Customer</button>
+        </a>
+        <a href="{% url 'prod_History' %}" class="btn-link">
+          <button class="btn btn-secondary" style="width: 100%;">View History</button>
+        </a>
+      </div>
+      {% endfor %}
+
+      <p class="footer-note">
+        Need a copy? <a href="#" onclick="window.print()">Print Receipt</a>
+      </p>
+    </div>
+    {% endif %}
+  </body>
+</html>
