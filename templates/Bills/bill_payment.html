@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Process Payment - ChefFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #ffb100;
+        --bg-dark: #0f172a;
+        --glass: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-light: #f8fafc;
+        --text-muted: #94a3b8;
+        --success: #22c55e;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        font-family: "Inter", sans-serif;
+        padding: 60px 5%;
+        background: radial-gradient(circle at bottom left, #1e293b, #0f172a);
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 40px;
+      }
+
+      .card, .summary-card {
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 30px;
+        border-radius: 24px;
+      }
+
+      h2, h3 { color: var(--primary); margin-top: 0; }
+
+      .form-group { margin-bottom: 20px; }
+      label { display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; }
+
+      input, select {
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      .btn-pay {
+        width: 100%;
+        padding: 16px;
+        background: var(--success);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+      th { text-align: left; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); padding: 12px; }
+      td { padding: 16px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+      .total-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px dashed var(--glass-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .grand-total { font-size: 2rem; font-weight: 800; color: var(--primary); }
+
+      input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px; /* Adds space between the label and input */
+  margin-bottom: 20px; /* Adds space below the input */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: white;
+  font-family: inherit;
+}
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      
+      <div class="card">
+        <h2>Complete Payment</h2>
+    
+        <form action="{% url 'bill_Terminal' order.order_id%}" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Linked Bill (Order ID)</label>
+            <input type="text" name="bill" value="{{order.order_id}}" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select name="payment_method">
+              <option value="Credit Card">Credit Card</option>
+              <option value='Cash'> Cash</option>
+              <option value='Digital Wallet'> Digital Wallet (EasyPaisa or JazzCash) </option> 
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Amount (PKR)</label>
+            <input type="number" name="amount" value="{{ total_amount }}" step="0.01" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Reference Number</label>
+            <input type="number" name="reference" placeholder="Enter Numeric Reference">
+          </div>
+
+          <input type="hidden" name="status" value="Completed">
+          
+          <input type="date" name="date" >
+
+          <button type="submit" class="btn-pay">Submit Payment</button>
+        </form>
+      </div>
+
+      <div class="summary-card">
+        <h3>Order Items</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in  orderItems%}
+            <tr>
+              <td>{{item.description}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.amount}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="total-section">
+            <span style="font-weight: 600; color: var(--text-muted);">Grand Total:</span>
+            <span class="grand-total">RS. {{ total_amount }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
