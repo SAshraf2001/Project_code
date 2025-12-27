@@ -24,11 +24,66 @@
         background-color: var(--bg-dark);
         color: var(--text-light);
         font-family: "Inter", sans-serif;
-        padding: 60px 8%;
+        padding: 100px 8% 60px; /* Adjusted top padding for navbar */
         background: radial-gradient(circle at top right, #1e293b, #0f172a);
         min-height: 100vh;
         margin: 0;
       }
+
+      /* --- Navbar Styles --- */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8%;
+        z-index: 1000;
+      }
+
+      .nav-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--text-light);
+      }
+
+      .nav-logo span {
+        color: var(--primary);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        color: var(--primary);
+      }
+
+      .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-left: 20px;
+        border-left: 1px solid var(--glass-border);
+      }
+      /* --- End Navbar Styles --- */
 
       .header-section {
         display: flex;
@@ -135,9 +190,41 @@
       .icon-btn:hover {
         color: var(--primary);
       }
+
+      /* Locked section spacing */
+      .features-locked {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+      }
+      .lock-card {
+        text-align: center;
+        background: var(--glass);
+        padding: 40px;
+        border-radius: 24px;
+        border: 1px solid var(--glass-border);
+        max-width: 400px;
+      }
     </style>
   </head>
   <body>
+    <nav class="navbar">
+      <a href="#" class="nav-logo">Chef<span>Flow</span></a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Dashboard</a>
+        <a href="{% url 'order_Products' %}" class="nav-link active">Orders</a>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+        <a href="#" class="nav-link">Reports</a>
+        {% if user.is_authenticated %}
+        <div class="nav-user">
+          <span style="font-size: 0.85rem; color: var(--text-light)">{{ user.username }}</span>
+          <a href="#" class="nav-link" style="font-size: 1.1rem">👤</a>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
     {% if user.is_authenticated %}
     <div class="header-section">
       <div>

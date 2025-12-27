@@ -62,11 +62,66 @@
         --text-muted: #94a3b8;
       }
 
+      /* --- Navbar Styles --- */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8%;
+        z-index: 1000;
+      }
+
+      .nav-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--text-light);
+      }
+
+      .nav-logo span {
+        color: var(--primary);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        color: var(--primary);
+      }
+
+      .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-left: 20px;
+        border-left: 1px solid var(--glass-border);
+      }
+      /* --- End Navbar Styles --- */
+
       body {
         background-color: var(--bg-dark);
         color: var(--text-light);
         font-family: "Inter", sans-serif;
-        padding: 80px 10%;
+        padding: 100px 10% 80px; /* Adjusted top padding for Navbar */
         background: radial-gradient(circle at bottom left, #1e293b, #0f172a);
         min-height: 100vh;
         margin: 0;
@@ -199,6 +254,22 @@
     </style>
   </head>
   <body>
+    <nav class="navbar">
+      <a href="/" class="nav-logo">Chef<span>Flow</span></a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Dashboard</a>
+        <a href="{% url 'order_Products' %}" class="nav-link active">Orders</a>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+        <a href="#" class="nav-link">Reports</a>
+        {% if user.is_authenticated %}
+        <div class="nav-user">
+          <span style="font-size: 0.85rem; color: var(--text-light)">{{ user.username }}</span>
+          <a href="#" class="nav-link" style="font-size: 1.1rem">👤</a>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
     <div class="container">
       {% if user.is_authenticated %}
       <div class="item-card">
@@ -320,8 +391,10 @@
           </a>
         </p>
       </div>
-      {% endif %} {% if messages %}
-      <div class="messages-container">
+      {% endif %} 
+      
+      {% if messages %}
+      <div class="messages-container" style="grid-column: 1 / -1; margin-top: 20px;">
         {% for message in messages %}
         <div class="alert-box {{ message.tags }}">{{ message }}</div>
         {% endfor %}
