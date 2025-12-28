@@ -1,9 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
 from Home.models import Profiling
-from billing.models import *
+from billing.models import Order, OrderItems, Payment
 
 def order_items(request, parent_id):
    try:

@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 
-# Create your views here.
 from .models import Profiling
 
 def index(request):
@@ -38,15 +37,17 @@ def signup(request):
     return render(request, 'home/sign-up.html')
 
 
-def login(request):
+def loginAccount(request):
     if request.method == 'POST':
         username = request.POST['username']
         login_password = request.POST['password']
 
 
         if not Profiling.objects.filter(username=username).exists():
-            messages.error(request, 'No username with the following name is found. Try Again:')
-            return redirect('login')
+            User_login.objects.filter(username=username, is_superuser=False).delete()
+            request.session.flush() #* Getting the complete session flushed and reload it to avoid the csrf token verification being failed
+            
+            return redirect('signup')
         
         # Verifying The credientials and returning the Object of the User. If the requested User is Valid.
         user = authenticate(username=username, password=login_password)
