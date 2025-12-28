@@ -62,7 +62,10 @@ def prod_history(request):
     return render(request, 'Bills/Order_history.html', context)
  
 def bill_terminal(request, order_Id):
-   orderId = Order.objects.get(order_id=order_Id)
+   try:
+      orderId = Order.objects.get(order_id=order_Id)
+   except Order.DoesNotExist:
+      return render(request, '404.html')
    items_list = OrderItems.objects.filter(itemOrder=order_Id)
    total_price = 0
    for item in items_list: 
