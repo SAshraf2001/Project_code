@@ -54,9 +54,13 @@ def order_Products(request):
 
 def prod_history(request):
     #* Retrieving the Data
-    params = Order.objects.all()
+   # params = Order.objects.all()
+    param_user = Profiling.objects.get(user=request.user)
+    param_user_a = Order.objects.filter(customer=param_user)
+    
+   # print(param_user_a)
     context = {
-        'params':params
+        'params':param_user_a
     }
     return render(request, 'Bills/Order_history.html', context)
  
