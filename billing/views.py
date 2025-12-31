@@ -93,7 +93,7 @@ def bill_terminal(request, order_Id):
    return render(request, 'Bills/bill_payment.html', {'order':orderId, 'total_amount':total_price, 'orderItems':items_list})   
 
 def payment_confirmed(request):
-   latest_payment = Payment.objects.latest('payment_date').last()
+   latest_payment = Payment.objects.latest('payment_date')
    params = OrderItems.objects.filter(itemOrder=latest_payment.bill)
    print(latest_payment)
    context = {"param":params,
