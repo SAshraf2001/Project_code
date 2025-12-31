@@ -4,7 +4,7 @@ from django.contrib import messages
 from Home.models import Profiling
 from billing.models import Order, OrderItems, Payment
 
-def order_items(request, parent_id):
+def order_items(request, parent_id): #* 4 --> lineTotal = 23400 Actually debugging how the product is being saved in the ordered_items model accordingly.
    try:
       order_obj = Order.objects.get(order_id=parent_id)
    except Order.DoesNotExist:
@@ -12,14 +12,13 @@ def order_items(request, parent_id):
 
    unit_price =0
    lineTotal = 0
-   unitPrice = Order.objects.filter(order_id=parent_id)
-   for item in unitPrice:
-        unit_price = item.total_amount
-        
    if request.method == 'POST' :
       prod_desc = request.POST['desc']
       quantity = int(request.POST['quantity'])
+      unit_price = int(request.POST.get('unit_price'))
       lineTotal = unit_price * quantity
+      print(f'The total Price of the Ordered Product is:{lineTotal}')
+  
       orderProd = OrderItems.objects.create(itemOrder=order_obj, description=prod_desc, amount=lineTotal, quantity=quantity, unit_price=unit_price)
       orderProd.save()
       messages.success(request, 'Order Placed:')   
@@ -29,27 +28,34 @@ def order_items(request, parent_id):
         # Getting The Orders data fetched:
    return render(request, 'Bills/order_prod_items.html', {"order_id": order_obj, 'items':items, 'amount':unit_price})   
     
-def order_Products(request):
+def order_Products(request, pay_id):
      #* Retrieving the Data of the User who is logged In:
     customs = Profiling.objects.filter(user=request.user)
+    total_amount = 0
+    payment_id = OrderItems.objects.filter(order_item_id=pay_id).first()
+    total_amount = payment_id.amount
+    print(f'Amount fetched:{total_amount}')
     if request.method == 'POST':
        customId = request.POST['customer_id']
        address = request.POST['address']
        billDate = request.POST['bill_date']
        dueDate = request.POST['due_date']
        pay_status = request.POST['status']
-       price = float(request.POST['total_amount'])
+      # price = float(request.POST['total_amount'])
     
     #* Getting the customer Id retrieved from the Profiling Model.  
-       custom_id = Profiling.objects.get(user=customId)
+       try:
+         custom_id = Profiling.objects.get(user=customId) #* 4 --> Generated from here then going to the order_item function where the rest of the work is bieng done. Customer is coming from the cusomter foreign key being used for fetching the user's data.
+       except Profiling.DoesNotExist:
+         return render(request, '404.html')
 
 
     #*   Saving the data in the Table.
-       Order.objects.create(customer=custom_id, address=address, bill_date=billDate, due_date=dueDate, status=pay_status, total_amount=price)
+       Order.objects.create(customer=custom_id, address=address, bill_date=billDate, due_date=dueDate, status=pay_status, total_amount=total_amount)
        messages.success(request, 'Saved Product Successfully:')
        return redirect('prod_History')
 
-    return render(request, 'Bills/order_prod.html' , {"customers": customs})
+    return render(request, 'Bills/order_prod.html' , {"customers": customs, 'pay_id':payment_id, 'amount':total_amount})
 
 
 def prod_history(request):

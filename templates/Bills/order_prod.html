@@ -231,7 +231,11 @@
       <a href="/" class="nav-logo">Chef<span>Flow</span></a>
       <div class="nav-links">
         <a href="/" class="nav-link">Dashboard</a>
-        <a href="{% url 'order_Products' %}" class="nav-link active">Orders</a>
+      {% if pay_id %}
+  <a href="{% url 'order_Products' pay_id.order_item_id %}" class="nav-link active">Orders</a>
+{% else %}
+  <a href="#" class="nav-link active">Orders</a>
+{% endif %}
         <a href="{% url 'logout' %}" class="nav-link">Logout</a>
         <a href="#" class="nav-link">Reports</a>
         {% if user.is_authenticated %}
@@ -298,7 +302,9 @@
               name="total_amount"
               step="0.01"
               placeholder="0.00"
+              value='{{amount}}'
               required
+              readonly
             />
           </div>
         </div>

@@ -298,10 +298,11 @@
               <input
                 type="number"
                 step="0.01"
-                value="{{amount}}"
+                {% comment %}value="{{amount}}"{% endcomment %}
                 id="unit_price"
                 placeholder="0.00"
-                readonly
+                name='unit_price'
+                {% comment %}value='unit_price'{% endcomment %}
               />
             </div>
             <div class="form-group">
