@@ -231,11 +231,7 @@
       <a href="/" class="nav-logo">Chef<span>Flow</span></a>
       <div class="nav-links">
         <a href="/" class="nav-link">Dashboard</a>
-      {% if pay_id %}
-  <a href="{% url 'order_Products' pay_id.order_item_id %}" class="nav-link active">Orders</a>
-{% else %}
-  <a href="#" class="nav-link active">Orders</a>
-{% endif %}
+  <a href="{% url 'order_Products'  %}" class="nav-link active">Orders</a>
         <a href="{% url 'logout' %}" class="nav-link">Logout</a>
         <a href="#" class="nav-link">Reports</a>
         {% if user.is_authenticated %}
@@ -294,18 +290,6 @@
               <option value="" disabled selected>Select status</option>
               <option value="Unpaid">Unpaid</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label>Unit Price (PKR)</label>
-            <input
-              type="number"
-              name="total_amount"
-              step="0.01"
-              placeholder="0.00"
-              value='{{amount}}'
-              required
-              readonly
-            />
           </div>
         </div>
 

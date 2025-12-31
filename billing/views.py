@@ -28,20 +28,15 @@ def order_items(request, parent_id): #* 4 --> lineTotal = 23400 Actually debuggi
         # Getting The Orders data fetched:
    return render(request, 'Bills/order_prod_items.html', {"order_id": order_obj, 'items':items, 'amount':unit_price})   
     
-def order_Products(request, pay_id):
+def order_Products(request):
      #* Retrieving the Data of the User who is logged In:
     customs = Profiling.objects.filter(user=request.user)
-    total_amount = 0
-    payment_id = OrderItems.objects.filter(order_item_id=pay_id).first()
-    total_amount = payment_id.amount
-    print(f'Amount fetched:{total_amount}')
     if request.method == 'POST':
        customId = request.POST['customer_id']
        address = request.POST['address']
        billDate = request.POST['bill_date']
        dueDate = request.POST['due_date']
        pay_status = request.POST['status']
-      # price = float(request.POST['total_amount'])
     
     #* Getting the customer Id retrieved from the Profiling Model.  
        try:
@@ -51,11 +46,11 @@ def order_Products(request, pay_id):
 
 
     #*   Saving the data in the Table.
-       Order.objects.create(customer=custom_id, address=address, bill_date=billDate, due_date=dueDate, status=pay_status, total_amount=total_amount)
+       Order.objects.create(customer=custom_id, address=address, bill_date=billDate, due_date=dueDate, status=pay_status)
        messages.success(request, 'Saved Product Successfully:')
        return redirect('prod_History')
 
-    return render(request, 'Bills/order_prod.html' , {"customers": customs, 'pay_id':payment_id, 'amount':total_amount})
+    return render(request, 'Bills/order_prod.html' , {"customers": customs})
 
 
 def prod_history(request):
@@ -63,10 +58,25 @@ def prod_history(request):
    # params = Order.objects.all()
     param_user = Profiling.objects.get(user=request.user)
     param_user_a = Order.objects.filter(customer=param_user)
+    #* Fetching the Data from the OrderItems against the same ID:
+    
+    for order in param_user_a:
+       total = 0
+       sum_total = 0
+       
+       order_object = OrderItems.objects.filter(itemOrder = order)
+       
+       for item in order_object:
+          total = item.amount + total
+      
+       sum_total += total
+       
+       order.total_amount = sum_total
+       print(f'Total Amount is Saved:{order.total_amount}')
     
    # print(param_user_a)
     context = {
-        'params':param_user_a
+        'params':param_user_a,
     }
     return render(request, 'Bills/Order_history.html', context)
  
