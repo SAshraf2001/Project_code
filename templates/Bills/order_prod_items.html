@@ -353,6 +353,14 @@
           </tbody>
           {% endfor %}
         </table>
+        <div style="margin-top: 30px; border-top: 1px solid var(--glass-border); pt-20">
+    <form action="{% url 'bill_Terminal' order_id.order_id %}">
+      <button type="submit" class="btn-pay">
+        <span style="margin-right: 8px;">💳</span> Pay Bill Now
+      </button>
+    </form>
+  </div>
+</div>
       </div>
       {% else %}
       <div class="form-container" style="text-align: center">

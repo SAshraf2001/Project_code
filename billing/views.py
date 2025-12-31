@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from Home.models import Profiling
 from billing.models import Order, OrderItems, Payment
+from django.utils import timezone
 
 def order_items(request, parent_id): #* 4 --> lineTotal = 23400 Actually debugging how the product is being saved in the ordered_items model accordingly.
    try:
@@ -63,18 +64,11 @@ def prod_history(request):
     for order in param_user_a:
        total = 0
        sum_total = 0
-       
        order_object = OrderItems.objects.filter(itemOrder = order)
-       
        for item in order_object:
           total = item.amount + total
-      
        sum_total += total
-       
        order.total_amount = sum_total
-       print(f'Total Amount is Saved:{order.total_amount}')
-    
-   # print(param_user_a)
     context = {
         'params':param_user_a,
     }
@@ -91,7 +85,7 @@ def bill_terminal(request, order_Id):
          total_price = item.amount + total_price
    if request.method == 'POST':
       reference_number = request.POST.get('reference')
-      payment_date = request.POST.get('date')
+      payment_date = request.POST.get('date') or timezone.now()
       payment_method = request.POST.get('payment_method')
       bill_object = Payment.objects.create(bill=orderId, payment_date=payment_date, reference_number=reference_number, amount=total_price, payment_method=payment_method, payment_status='Paid')
       bill_object.save()
@@ -99,6 +93,10 @@ def bill_terminal(request, order_Id):
    return render(request, 'Bills/bill_payment.html', {'order':orderId, 'total_amount':total_price, 'orderItems':items_list})   
 
 def payment_confirmed(request):
-   params = Payment.objects.all()
-   context = {"param":params}
+   latest_payment = Payment.objects.latest('payment_date').last()
+   params = OrderItems.objects.filter(itemOrder=latest_payment.bill)
+   print(latest_payment)
+   context = {"param":params,
+              'latest_payment':latest_payment, 
+              'total':latest_payment.amount}
    return render(request, 'Bills/payment_confirmed.html', context)

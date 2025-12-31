@@ -205,16 +205,15 @@
 
       <h1>Payment Successful</h1>
       <p class="status-text">Your transaction has been processed.</p>
-
-      <div class="price-display">Rs. {{param.last.amount}}</div>
+      <div class="price-display">Rs. {{total}}</div>
 
       <div class="receipt-box">
         <div class="line">
           <span>Transaction ID</span>
-          <span>#{{param.last.payId}}</span>
+          <span>#{{latest_payment}}</span>
         </div>
         <div class="line">
-          <span>{{param.last.payment_method}}</span>
+          <span>{{params.payment_method}}</span>
           <span>Digital Wallet</span>
         </div>
         <div class="line">

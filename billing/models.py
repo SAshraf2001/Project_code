@@ -1,7 +1,7 @@
 from django.db import models
 from Home.models import Profiling
-
 import string
+from django.utils import timezone
 import secrets
 
 #defining a function for random Ids generation:
@@ -16,7 +16,7 @@ def random_ids():
 class Order(models.Model):
     order_id = models.CharField(max_length=23, primary_key=True, default=random_ids, editable=False)
     customer = models.ForeignKey(Profiling,  on_delete=models.CASCADE)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     address = models.CharField(max_length=100, null=False, blank=False)
     status = models.CharField(max_length=12, blank=False, null=False)
     bill_date = models.DateField()
@@ -41,7 +41,7 @@ class OrderItems(models.Model):
 class Payment(models.Model):
     payId = models.CharField(max_length=15, primary_key=True, default=random_ids, editable=False)
     bill= models.ForeignKey(Order, on_delete=models.CASCADE,  related_name='bills')
-    payment_date = models.DateTimeField()
+    payment_date = models.DateTimeField(blank=False, null=False)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=23, null=False, blank=False)
     reference_number = models.IntegerField()
