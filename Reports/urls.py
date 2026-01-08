@@ -1,5 +1,6 @@
 from django.urls import path
 from Reports import views
 urlpatterns = [
-     path('', views.home_index, name='home_Index')
+     path('report-module/', views.report_type, name='reportType'),
+     path('report/', views.report, name='Report')
 ]

@@ -223,7 +223,7 @@
         >
           Billing History
         </a>
-        <a href="#" class="btn btn-outline">Order</a>
+        <a href="{% url 'order_Products' %}" class="btn btn-outline">Order</a>
         <a href="/logout/" class="btn btn-filled">Logout Now</a>
         {% else %}
         <a href="/login/" class="btn btn-outline">Login</a>
