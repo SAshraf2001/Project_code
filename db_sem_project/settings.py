@@ -16,6 +16,9 @@ import pymysql
 pymysql.version_info = (2, 2, 7, "final", 0)
 pymysql.install_as_MySQLdb()
 
+import os # Make sure this is at the top of your file or here
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -135,3 +138,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+# The URL that the browser uses to access the files
+MEDIA_URL = '/media/'
+
+# The actual directory on your computer where files are saved
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

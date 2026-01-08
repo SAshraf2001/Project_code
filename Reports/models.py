@@ -24,7 +24,7 @@ class Report(models.Model):
     generated_by = models.CharField(max_length=233)
     generated_at = models.DateTimeField(auto_now_add=True)
     parameters = models.TextField(blank=True, null=True)
-    file_path = models.CharField(max_length=255)
+    file_path = models.FileField(upload_to='reports_pdf/', null=True, blank=True)
     
     def __str__(self):
         return f"{self.report_id} - {self.report_type.name}"
