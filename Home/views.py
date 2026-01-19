@@ -70,8 +70,8 @@ def handle_logout(request):
 
 def user(request):
     # Data getting fetched:
-    user = Profiling.objects.all()
+    user = Profiling.objects.get(user=request.user)
     context = {
         'users': user
     }
-    return render(request, 'person.html', context)
+    return render(request, 'home/user_profile_page.html', context)
