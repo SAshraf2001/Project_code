@@ -76,9 +76,9 @@ def report_type(request):
         # --- PDF GENERATION LOGIC ---
         buffer = BytesIO()
         p = canvas.Canvas(buffer, pagesize=A4)
-        p.setFont("Poppins-bold", 16)
+        p.setFont("Helvetica-Bold", 16)
         p.drawString(100, 750, pdf_title)
-        p.setFont("Poppins", 12)
+        p.setFont("Helvetica", 12)
         p.drawString(100, 720, f"Customer: {username_str}")
         p.drawString(100, 700, f"Period: {start_date} to {end_date}")
         p.drawString(100, 680, final_value)
